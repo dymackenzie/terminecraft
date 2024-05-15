@@ -6,6 +6,7 @@ include(CTest)
 enable_testing()
 
 # include header files
+include_directories(src)
 include_directories(include)
 
 # main
@@ -20,6 +21,7 @@ target_include_directories(Catch
 	INTERFACE
 		test/
 )
+
 add_executable(
 	tests
 	test/test_game.cpp

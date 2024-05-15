@@ -54,7 +54,17 @@ class Game {
         /**
          * If ray is outside bounds of border, return true.
          */
-        bool isOutside(Vector3 v);
+        bool isRayOutside(Vector3 v);
+
+        /**
+         * If vector is within block border size on two axis, return true.
+         */
+        bool onBlockBorder(Vector3 v);
+
+        /**
+         * Generates picture by raytracing for each element on screen data structure.
+         */
+        void refreshScreen();
     
 
     private:

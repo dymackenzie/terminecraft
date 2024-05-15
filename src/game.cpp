@@ -71,8 +71,30 @@ void Game::updatePlayer() {
 /**
  * If ray is outside bounds of border, return true.
  */
-bool Game::isOutside(Vector3 v) {
-    
+bool Game::isRayOutside(Vector3 v) {
+    return (v.x >= CHUNK_X) 
+            || (v.y >= CHUNK_Y)
+            || (v.z >= CHUNK_Z)
+            || (v.x < 0)
+            || (v.y < 0)
+            || (v.z < 0);
+}
+
+/**
+ * If vector is within block border size on two axis, return true.
+ */
+bool Game::onBlockBorder(Vector3 v) {
+    int c = 0;
+    if (fabsf(v.x - roundf(v.x)) < BLOCK_BORDER_WIDTH) {
+        c++;
+    }
+    if (fabsf(v.y - roundf(v.y)) < BLOCK_BORDER_WIDTH) {
+        c++;
+    }
+    if (fabsf(v.z - roundf(v.z)) < BLOCK_BORDER_WIDTH) {
+        c++;
+    }
+    return c >= 2;
 }
 
 /**

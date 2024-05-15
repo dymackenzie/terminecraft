@@ -96,11 +96,11 @@ inline void show_cursor(bool flag) {
 inline void set_cursor_mode(bool flag) { show_cursor(flag); } //Alias
 
 //Mouse support - there may be a bug with the first click
-inline static bool mouse_mode = false; //We default to not reading mouse events
+static bool mouse_mode = false; //We default to not reading mouse events
 inline void remind_about_callbacks(int row, int col);
 //With mouse events on, if they don't set a handler for mousedown events we will remind them
-inline static std::function<void(int,int)> mousedown_callback = remind_about_callbacks;
-inline static std::function<void(int,int)> mouseup_callback = [](int,int){}; //Ignore mouseup events by default
+static std::function<void(int,int)> mousedown_callback = remind_about_callbacks;
+static std::function<void(int,int)> mouseup_callback = [](int,int){}; //Ignore mouseup events by default
 
 //The default function reminds users how to set up a callback then disables itself
 inline void remind_about_callbacks([[maybe_unused]] int row,[[maybe_unused]] int col) {
@@ -248,7 +248,7 @@ inline int quick_read() {
 
 		//See if it contains the 4 byte escape sequence for a mouse event
 		while (input.size() > 4) {
-			auto [rows,cols] = get_terminal_size(); //Make sure we're returning an int in range
+			//auto [rows,cols] = get_terminal_size(); //Make sure we're returning an int in range
 			if (input[0] == '[' and
 					input[1] == '<' and
 					input[2] == '0' and
@@ -274,7 +274,7 @@ inline int quick_read() {
 						if (reading_col) temp_col = 10*temp_col + temp;
 						else temp_row = 10*temp_row + temp;
 						//Double clicks aren't handled, so just pretend nothing happened
-						if (temp_col > cols or temp_row > rows) return ERR;
+						// if (temp_col > cols or temp_row > rows) return ERR;
 					}
 				}
 
