@@ -8,42 +8,53 @@
 #include <vector>
 #include <vec3.hpp>
 #include <vecs.hpp>
+#include <colors.h>
 
 using namespace std;
 
-const int WIDTH = 500;
-const int HEIGHT = 180;
+static const int WIDTH = 500;
+static const int HEIGHT = 180;
 
-const int VIEW_WIDTH = 1; // in radians
-const int VIEW_HEIGHT = 0.7; // in radians
+static const float VIEW_WIDTH = 1; // in radians
+static const float VIEW_HEIGHT = 0.7; // in radians
 
 // speed of player and view rotation speed
-const float SPEED = 0.15;
-const float TILT = 0.03;
+static const float SPEED = 0.15;
+static const float TILT = 0.03;
 
-const int BLOCK_X = 16;
-const int BLOCK_Y = 16;
-const int BLOCK_Z = 16;
-const int DEPTH = 4;
+static const int CHUNK_X = 16;
+static const int CHUNK_Y = 16;
+static const int CHUNK_Z = 16;
+static const int DEPTH = 4;
 
-const float EYE_HEIGHT = 1.5;
+static const float EYE_HEIGHT = 1.5;
 
 // starting position of player
-const int START_X = 5;
-const int START_Y = 5;
-const int START_Z = DEPTH + EYE_HEIGHT;
+static const int START_X = 5;
+static const int START_Y = 5;
+static const int START_Z = DEPTH + EYE_HEIGHT;
 
-const float BLOCK_BORDER_WIDTH = 0.03;
-const char BLOCK_FILL = '@';
-const char BLOCK_BORDER = '.';
+static const float BLOCK_BORDER_WIDTH = 0.03;
+static const char BLOCK_FILL = '@';
+static const char BLOCK_BORDER = '.';
 
 class Game {
     public:
 
         /**
+         * Default constructor, initializes player, block map, and screen.
+         */
+        Game();
+
+        /**
          * Updates player view and position based on keyboard input.
          */
         void updatePlayer();
+
+        /**
+         * If ray is outside bounds of border, return true.
+         */
+        bool isOutside(Vector3 v);
     
 
     private:
@@ -81,6 +92,11 @@ class Game {
         void initMap();
 
         /**
+         * Initializes initial screen size.
+         */
+        void initScreen();
+
+        /**
          * Fills the existing block map up with blocks.
          * 
          * @pre - the block map must already be initialized.
@@ -92,6 +108,10 @@ class Game {
          */
         void initPlayer();
 
+        /**
+         * Helper function to convert x and y indices into index for singular array.
+         */
+        int convertCoordinates(int x, int y);
 
 };
 
