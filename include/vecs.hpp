@@ -6,7 +6,6 @@
 #define VECTORS_H
 
 #include <vec3.hpp>
-#include <math.h>
 
 class VectorS {
     public:
