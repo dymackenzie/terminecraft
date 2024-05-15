@@ -56,6 +56,20 @@ class VectorS {
             temp.z = sin(a.theta);
             return temp;
         }
+
+        /**
+         * Adds two VectorS classes,
+         * format: (a1 + a2)
+         * 
+         * @param a1 - first VectorS to add
+         * @param a2 - second VectorS to add
+         */
+        static VectorS add(VectorS a1, VectorS a2) {
+            VectorS temp;
+            temp.phi = a1.phi + a2.phi;
+            temp.theta = a1.theta + a2.theta;
+            return temp;
+        }
 };
 
 #endif

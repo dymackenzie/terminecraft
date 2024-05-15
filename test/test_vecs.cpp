@@ -15,4 +15,7 @@ TEST_CASE( "VectorS operations", "[VectorS]" ) {
         REQUIRE( v == Vector3(1, 0, 0) );
         REQUIRE( v2 == Vector3(0, 0, 1));
     }
+    SECTION( "vector addition") {
+        REQUIRE( VectorS::add(a, a2) == VectorS(M_PI / 2, M_PI / 2));
+    }
 }

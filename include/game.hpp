@@ -53,11 +53,15 @@ class Game {
 
         /**
          * If ray is outside bounds of border, return true.
+         * 
+         * @param v - vector to check
          */
         bool isRayOutside(Vector3 v);
 
         /**
          * If vector is within block border size on two axis, return true.
+         * 
+         * @param v - vector to check
          */
         bool onBlockBorder(Vector3 v);
 
@@ -65,6 +69,11 @@ class Game {
          * Generates picture by raytracing for each element on screen data structure.
          */
         void refreshScreen();
+
+        /**
+         * Prints out screen onto terminal.
+         */
+        void drawScreen();
     
 
     private:
@@ -117,6 +126,18 @@ class Game {
          * Initializes player position and view area.
          */
         void initPlayer();
+
+        /**
+         * Initializes the initial ray tracing directions for each pixel on screen
+         */
+        vector<vector<Vector3>> initDir();
+
+        /**
+         * Raytraces from given initial direction until it hits a block.
+         * 
+         * @param dir - initial direction to raytrace from.
+         */
+        char raytracing(Vector3 dir);
 
         /**
          * Helper function to convert x and y indices into index for singular array.

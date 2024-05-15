@@ -98,6 +98,119 @@ bool Game::onBlockBorder(Vector3 v) {
 }
 
 /**
+ * Generates picture by raytracing for each element on screen data structure.
+ */
+void Game::refreshScreen() {
+    // initializes initial ray tracing directions
+    vector<vector<Vector3>> dirs = initDir();
+    for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
+            screen[x][y] = raytracing(dirs[x][y]);
+            // raytraces each inidivudal pixel given its initial direction.
+        }
+    }
+}
+
+/**
+ * Prints out screen onto terminal.
+ */
+void Game::drawScreen() {
+
+}
+
+/**
+ * Initializes the initial ray tracing directions for each pixel on screen
+ */
+vector<vector<Vector3>> Game::initDir() {
+    // initialize initial direction array
+    vector<vector<Vector3>> dirs;
+
+    // finds middle of screen in vector form
+    VectorS t = player.view;
+
+    // boundaries of the frame
+    Vector3 bottom = VectorS::anglesToVect(VectorS::add(t, VectorS(0, -VIEW_HEIGHT / 2.0)));
+    Vector3 top = VectorS::anglesToVect(VectorS::add(t, VectorS(0, VIEW_HEIGHT / 2.0)));
+    Vector3 right = VectorS::anglesToVect(VectorS::add(t, VectorS(VIEW_WIDTH / 2.0, 0)));
+    Vector3 left = VectorS::anglesToVect(VectorS::add(t, VectorS(-VIEW_WIDTH / 2.0, 0)));
+
+    // middle of frame
+    Vector3 vertical_mid = Vector3::scale(Vector3::add(top, bottom), 0.5);
+    Vector3 horizontal_mid = Vector3::scale(Vector3::add(right, left), 0.5);
+
+    // from middle of frame to boundaries
+    Vector3 middle_point_left = Vector3::sub(left, horizontal_mid);
+    Vector3 middle_point_top = Vector3::sub(top, vertical_mid);
+
+    // populates the array
+    // what this does is it takes the initial point of (0, 0) and has as vector
+    // pointing to it. Then, it scales the vectors pointing from the middle of the
+    // screen to the left and top and adds it on to the initial vector point of (0, 0).
+    // the initial vector is now pointing from the camera to the next pixel on screen.
+    // this allows us to calculate every ray direction from a singular point (namely our
+    // camera) onto the screen at a given distance.
+    for (int y = 0; y < HEIGHT; y++) {
+        vector<Vector3> t_array;
+        for (int x = 0; x < WIDTH; x++) {
+            Vector3 d = Vector3::add(horizontal_mid, Vector3::add(middle_point_left, middle_point_top));
+            float x_scale = ((float) x / (WIDTH - 1)) * 2;
+            float y_scale = ((float) y / (HEIGHT - 1)) * 2;
+            d = Vector3::sub(d, Vector3::scale(middle_point_left, x_scale));
+            d = Vector3::sub(d, Vector3::scale(middle_point_top, y_scale));
+            d = Vector3::normalize(d); // normalizes to make length 1
+            t_array.push_back(d);
+        }
+        dirs.push_back(t_array);
+    }
+
+    return dirs;
+}
+
+/**
+ * Raytraces from given initial direction until it hits a block.
+ */
+char Game::raytracing(Vector3 dir) {
+    float eps = 0.01;
+    Vector3 position = player.pos; // position to raytrace from
+    while (!isRayOutside(position)) {
+        // while ray is within bounds, check char
+        // and returns first non-null character if finds
+        char block = block_map[(int)position.z][convertCoordinates((int)position.x, (int)position.y)];
+        if (block != ' ') { // if not empty
+            // check if it's on border
+            if (onBlockBorder(position))
+                return BLOCK_BORDER;
+            else
+                return BLOCK_FILL;
+        }
+        float ray_increment = 2;
+        // stops incremenet from increasing by greater than 2
+        if (dir.x > eps) {
+            ray_increment = min(ray_increment, ((int)(position.x + 1) - position.x) / dir.x);
+        } else if (dir.x < -eps) {
+            ray_increment = min(ray_increment, ((int)(position.x) - position.x) / dir.x);
+        }
+
+        if (dir.y > eps) {
+            ray_increment = min(ray_increment, ((int)(position.y + 1) - position.y) / dir.y);
+        } else if (dir.y < -eps) {
+            ray_increment = min(ray_increment, ((int)(position.y) - position.y) / dir.y);
+        }
+
+        if (dir.z > eps) {
+            ray_increment = min(ray_increment, ((int)(position.z + 1) - position.z) / dir.z);
+        } else if (dir.z < -eps) {
+            ray_increment = min(ray_increment, ((int)(position.z) - position.z) / dir.z);
+        }
+
+        // increments raytracer position
+        position = Vector3::add(position, Vector3::scale(dir, ray_increment + eps));
+    }
+
+    return ' ';
+}
+
+/**
  * Initializes initial screen size.
  * 
  * Order: [x][y]
