@@ -3,7 +3,7 @@
  */
 
 #include <math.h>
-#include <vecs.h>
+#include <vecs.hpp>
 
 /**
  * Converts VectorS angles to position on the unit circle in x, y, and z

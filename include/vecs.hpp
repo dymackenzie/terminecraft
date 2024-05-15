@@ -1,11 +1,11 @@
 /**
- * @file vecs.h
+ * @file vecs.hpp
  */
 
 #ifndef VECTORS_H
 #define VECTORS_H
 
-#include <vec3.h>
+#include <vec3.hpp>
 
 class VectorS {
     public:

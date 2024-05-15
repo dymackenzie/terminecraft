@@ -3,7 +3,7 @@
  */
 
 #include <math.h>
-#include <vec3.h>
+#include <vec3.hpp>
 #include <iostream>
 
 /**
