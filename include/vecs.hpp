@@ -6,6 +6,7 @@
 #define VECTORS_H
 
 #include <vec3.hpp>
+#include <math.h>
 
 class VectorS {
     public:
@@ -34,12 +35,28 @@ class VectorS {
         }
 
         /**
+         * Overrides the equality operator
+         */
+        bool const operator == (const VectorS &v) const { 
+            if (fabs(phi - v.phi) < EPISLON && 
+                fabs(theta - v.theta) < EPISLON)
+                return true; 
+            return false; 
+        }
+
+        /**
          * Converts VectorS angles to position on the unit circle in x, y, and z
          * coordinates. 
          * 
          * @param a - VectorS class holding both angles
          */
-        Vector3 anglesToVect(VectorS a);
+        static Vector3 anglesToVect(VectorS a) {
+            Vector3 temp;
+            temp.x = cos(a.theta) * cos(a.phi);
+            temp.y = cos(a.theta) * sin(a.phi);
+            temp.z = sin(a.theta);
+            return temp;
+        }
 };
 
 #endif
