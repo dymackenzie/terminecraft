@@ -13,6 +13,24 @@ class Vector3 {
         float z;
 
         /**
+         * Default constructor for Vector3 class.
+         */
+        Vector3() {
+            x = 0;
+            y = 0;
+            z = 0;
+        }
+
+        /**
+         * Constructor for Vector3 class.
+         */
+        Vector3(float px, float py, float pz) {
+            x = px;
+            y = py;
+            z = pz;
+        }
+
+        /**
          * Adds two Vector3 together and returns resulting Vector3.
          * 
          * @param v1 - first vector

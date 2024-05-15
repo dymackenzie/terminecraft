@@ -12,7 +12,7 @@
  * @param v1 - first vector
  * @param v2 - second vector
  */
-Vector3 add(Vector3 v1, Vector3 v2) {
+Vector3 Vector3::add(Vector3 v1, Vector3 v2) {
     Vector3 temp;
     temp.x = v1.x + v2.x;
     temp.y = v1.y + v2.y;
@@ -26,7 +26,7 @@ Vector3 add(Vector3 v1, Vector3 v2) {
  * @param v1 - first vector
  * @param v2 - second vector
  */
-Vector3 sub(Vector3 v1, Vector3 v2) {
+Vector3 Vector3::sub(Vector3 v1, Vector3 v2) {
     Vector3 temp;
     temp.x = v1.x - v2.x;
     temp.y = v1.y - v2.y;
@@ -40,7 +40,7 @@ Vector3 sub(Vector3 v1, Vector3 v2) {
  * @param v - vector passed by parameter
  * @param s - float to scale vector by
  */
-void scale(Vector3 &v, float s) {
+void Vector3::scale(Vector3 &v, float s) {
     v.x *= s;
     v.y *= s;
     v.z *= s;
@@ -51,7 +51,7 @@ void scale(Vector3 &v, float s) {
  * 
  * @param v - vector to normalize
  */
-void normalize(Vector3 &v) {
+void Vector3::normalize(Vector3 &v) {
     float length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     v.x /= length;
     v.y /= length;
@@ -63,7 +63,7 @@ void normalize(Vector3 &v) {
  * 
  * @param v - vector to print
  */
-void print(Vector3 v) {
+void Vector3::print(Vector3 v) {
     std::cout << "x = " << v.x << " y = " << v.y << " z = " << v.z << std::endl;
 }
 
