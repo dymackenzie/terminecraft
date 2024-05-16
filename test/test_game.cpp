@@ -40,14 +40,20 @@ TEST_CASE( "onBlockBorder", "[Game]" ) {
 TEST_CASE( "getBlock", "[Game]" ) {
     SECTION("pointing void") {
         Game game = Game();
-        //Vector3 t = game.getBlock();
+        Vector3 t = game.getBlock();
         // in original game ray trace is pointing into the void
-        //REQUIRE( t == Vector3(16.01, 5, 5) );
+        REQUIRE( t == Vector3(16.01, 5, 5) );
     }
-    SECTION("pointing down") {
+    SECTION("pointing up") {
         Game game = Game(Vector3(START_X, START_Y, START_Z),
                         VectorS(0, M_PI / 2));
         Vector3 t = game.getBlock();
-        Vector3::print(t);
+        REQUIRE( t == Vector3(5, 5, 16.01) );
+    }
+    SECTION("pointing down") {
+        Game game = Game(Vector3(START_X, START_Y, START_Z),
+                        VectorS(0, -M_PI / 2));
+        Vector3 t = game.getBlock();
+        REQUIRE( t == Vector3(5, 5, 3.99) );
     }
 }

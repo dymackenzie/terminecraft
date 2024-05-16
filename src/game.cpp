@@ -250,6 +250,49 @@ Vector3 Game::getBlock() {
 }
 
 /**
+ * Place a block on the face the player is pointing at, it does this
+ * by finding the closest face the player is pointing at and then
+ * places block in respective location.
+ * Block faces 0-5: x+, x-, y+, y-, z+, z-
+ */
+void Game::placeBlock(Vector3 curr) {
+    // puts distances to faces of block in array and finds minimum
+    vector<float> distances = {
+        fabsf(((int) curr.x + 1) - curr.x),
+        fabsf(((int) curr.x ) - curr.x),
+        fabsf(((int) curr.y + 1) - curr.y),
+        fabsf(((int) curr.y ) - curr.y),
+        fabsf(((int) curr.z + 1) - curr.z),
+        fabsf(((int) curr.z ) - curr.z)
+    };
+
+    // finds minimum index
+    int minimumIndex = distance(begin(distances), min_element(begin(distances), end(distances)));
+
+    // places block based on closest face
+    if (minimumIndex == 0) {
+        // x+
+        block_map[curr.z][convertCoordinates(curr.x + 1, curr.y)] = BLOCK_FILL;
+    } else if (minimumIndex == 1) {
+        // x-
+        block_map[curr.z][convertCoordinates(curr.x - 1, curr.y)] = BLOCK_FILL;
+    } else if (minimumIndex == 2) {
+        // y+
+        block_map[curr.z][convertCoordinates(curr.x, curr.y + 1)] = BLOCK_FILL;
+    } else if (minimumIndex == 3) {
+        // y-
+        block_map[curr.z][convertCoordinates(curr.x, curr.y - 1)] = BLOCK_FILL;
+    } else if (minimumIndex == 4) {
+        // z+
+        block_map[curr.z + 1][convertCoordinates(curr.x, curr.y)] = BLOCK_FILL;
+    } else {
+        // z-
+        block_map[curr.z - 1][convertCoordinates(curr.x, curr.y)] = BLOCK_FILL;
+    }
+
+}
+
+/**
  * Initializes initial screen size.
  * 
  * Order: [x][y]
@@ -298,6 +341,14 @@ void Game::fillMap() {
             block_map[z][xy] = BLOCK_FILL;
         }
     }
+}
+
+/**
+ * Helper function to both calculate how much to increment raytrace by, keeping it
+ * clamped to 2 or below.
+ */
+float Game::rayIncrement(Vector3 position) {
+    
 }
 
 /**

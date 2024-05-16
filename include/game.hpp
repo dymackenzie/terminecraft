@@ -9,6 +9,7 @@
 #include <vec3.hpp>
 #include <vecs.hpp>
 #include <colors.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -83,6 +84,14 @@ class Game {
         Vector3 getBlock();
 
         /**
+         * Place a block on the face the player is pointing at, it does this
+         * by finding the closest face the player is pointing at and then
+         * places block in respective location.
+         * Block faces 0-5: x+, x-, y+, y-, z+, z-
+         */
+        void placeBlock(Vector3 curr);
+
+        /**
          * If ray is outside bounds of border, return true.
          * 
          * @param v - vector to check
@@ -147,6 +156,12 @@ class Game {
          * Initializes player position and view area.
          */
         void initPlayer();
+
+        /**
+         * Helper function to both calculate how much to increment raytrace by, keeping it
+         * clamped to 2 or below.
+         */
+        float rayIncrement(Vector3 position);
 
         /**
          * Initializes the initial ray tracing directions for each pixel on screen
