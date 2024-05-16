@@ -5,16 +5,6 @@
 #include <game.hpp>
 
 /**
- * Default constructor.
- */
-Game::Game() {
-    initMap();
-    fillMap();
-    initScreen();
-    initPlayer();
-}
-
-/**
  * Updates player view and position based on keyboard input.
  */
 void Game::updatePlayer() {
@@ -115,7 +105,13 @@ void Game::refreshScreen() {
  * Prints out screen onto terminal.
  */
 void Game::drawScreen() {
-
+    printf("\033[0;0H"); // this jumps to (0, 0) to overwrite the current picture
+	for (int y = 0; y < HEIGHT; y++) {
+		for (int x = 0; x < WIDTH; x++) {
+			printf("%c", screen[x][y]);
+		}
+		printf("\n");
+	}	
 }
 
 /**
@@ -203,11 +199,54 @@ char Game::raytracing(Vector3 dir) {
             ray_increment = min(ray_increment, ((int)(position.z) - position.z) / dir.z);
         }
 
-        // increments raytracer position
+        // increments raytracer position and repeats the process
         position = Vector3::add(position, Vector3::scale(dir, ray_increment + eps));
     }
 
     return ' ';
+}
+
+/**
+ * Get block player is pointing at,
+ * basically like raytracing except for the middle ray and
+ * the function returns position of the block player is pointing at
+ */
+Vector3 Game::getBlock() {
+    float eps = 0.01;
+    Vector3 position = player.pos; // position to raytrace from
+    Vector3 dir = VectorS::anglesToVect(player.view); // get middle ray in the direction player is facing
+    while (!isRayOutside(position)) {
+        // while ray is within bounds, check char
+        // and returns when reaches a block
+        char block = block_map[(int)position.z][convertCoordinates((int)position.x, (int)position.y)];
+        if (block != ' ') { // if not empty
+            return position;
+        }
+        float ray_increment = 2;
+        // stops incremenet from increasing by greater than 2
+        if (dir.x > eps) {
+            ray_increment = min(ray_increment, ((int)(position.x + 1) - position.x) / dir.x);
+        } else if (dir.x < -eps) {
+            ray_increment = min(ray_increment, ((int)(position.x) - position.x) / dir.x);
+        }
+
+        if (dir.y > eps) {
+            ray_increment = min(ray_increment, ((int)(position.y + 1) - position.y) / dir.y);
+        } else if (dir.y < -eps) {
+            ray_increment = min(ray_increment, ((int)(position.y) - position.y) / dir.y);
+        }
+
+        if (dir.z > eps) {
+            ray_increment = min(ray_increment, ((int)(position.z + 1) - position.z) / dir.z);
+        } else if (dir.z < -eps) {
+            ray_increment = min(ray_increment, ((int)(position.z) - position.z) / dir.z);
+        }
+
+        // increments raytracer position and repeats the process
+        position = Vector3::add(position, Vector3::scale(dir, ray_increment + eps));
+    }
+
+    return position;
 }
 
 /**

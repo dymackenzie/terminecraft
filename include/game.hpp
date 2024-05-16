@@ -44,12 +44,43 @@ class Game {
         /**
          * Default constructor, initializes player, block map, and screen.
          */
-        Game();
+        Game() {
+            initMap();
+            fillMap();
+            initScreen();
+            initPlayer();
+        }
+
+        /**
+         * Customized constructor.
+         */
+        Game(Vector3 ppos, VectorS pview) {
+            *this = Game();
+            player.pos = ppos;
+            player.view = pview;
+        }
 
         /**
          * Updates player view and position based on keyboard input.
          */
         void updatePlayer();
+
+        /**
+         * Generates picture by raytracing for each element on screen data structure.
+         */
+        void refreshScreen();
+
+        /**
+         * Prints out screen onto terminal.
+         */
+        void drawScreen();
+
+        /**
+         * Get block player is pointing at,
+         * basically like raytracing except for the middle ray and
+         * the function returns position of the block player is pointing at
+         */
+        Vector3 getBlock();
 
         /**
          * If ray is outside bounds of border, return true.
@@ -64,16 +95,6 @@ class Game {
          * @param v - vector to check
          */
         bool onBlockBorder(Vector3 v);
-
-        /**
-         * Generates picture by raytracing for each element on screen data structure.
-         */
-        void refreshScreen();
-
-        /**
-         * Prints out screen onto terminal.
-         */
-        void drawScreen();
     
 
     private:
