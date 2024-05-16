@@ -5,19 +5,32 @@
 #include <game.hpp>
 
 /**
+ * Bailout function to stop leaving terminal in a bad state.
+ */
+void bailout() {
+    set_mouse_mode(false);
+    set_raw_mode(false);
+}
+
+/**
  * Runs all necessary game logic.
  */
 void Game::run()
 {
+    atexit(bailout);
+    set_raw_mode(true);
     while (true)
     {
-        // updates position of player
-        raw_mode = true;
-        updatePlayer();
-
-        char c = quick_read();
+        int c = quick_read();
         // quit
-        if (c == 'q') break;
+        if (c == 'q') {
+            set_raw_mode(false);
+            break;
+        }
+        if (c == ERR) usleep(10'000);
+
+        // updates position of player
+        updatePlayer(c); 
 
         // handle block highlight and placement
         Vector3 currBlock = getBlock();
@@ -53,8 +66,10 @@ void Game::run()
 
 /**
  * Updates player view and position based on keyboard input.
+ * 
+ * @param c - input keyboard
  */
-void Game::updatePlayer()
+void Game::updatePlayer(int c)
 {
     // takes initial position of player
     int posX = (int)player.pos.x;
@@ -73,7 +88,6 @@ void Game::updatePlayer()
     // otherwise, don't change z
 
     // change view angle
-    int c = quick_read();
     if (c == ARROW_UP)
     {
         player.view.theta += TILT;
@@ -106,13 +120,13 @@ void Game::updatePlayer()
     }
     if (c == 'a')
     {
-        player.pos.x += SPEED * playerDirection.x;
-        player.pos.y -= SPEED * playerDirection.y;
+        player.pos.x += SPEED * playerDirection.y;
+        player.pos.y -= SPEED * playerDirection.x;
     }
     if (c == 'd')
     {
-        player.pos.x -= SPEED * playerDirection.x;
-        player.pos.y += SPEED * playerDirection.y;
+        player.pos.x -= SPEED * playerDirection.y;
+        player.pos.y += SPEED * playerDirection.x;
     }
 }
 
@@ -246,7 +260,7 @@ char Game::raytracing(Vector3 dir)
             if (onBlockBorder(position))
                 return BLOCK_BORDER;
             else
-                return BLOCK_FILL;
+                return block;
         }
 
         // increments raytracer position and repeats the process

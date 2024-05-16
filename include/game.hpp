@@ -71,8 +71,10 @@ public:
 
     /**
      * Updates player view and position based on keyboard input.
+     * 
+     * @param c - input keyboard
      */
-    void updatePlayer();
+    void updatePlayer(int c);
 
     /**
      * Generates picture by raytracing for each element on screen data structure.
@@ -122,7 +124,7 @@ public:
     }
 
     /**
-     * Returns screen structure
+     * Returns screen
      */
     vector<vector<char>> getScreen()
     {
@@ -130,8 +132,6 @@ public:
     }
 
 private:
-    // data
-
     /**
      * struct for player attributes
      */
