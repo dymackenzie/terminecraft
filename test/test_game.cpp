@@ -66,40 +66,64 @@ TEST_CASE("getBlock", "[Game]")
 
 TEST_CASE("placeBlock", "[Game]")
 {
+    Game game = Game();
     SECTION("x+")
     {
-        Game game = Game();
         game.placeBlock(Vector3(5.9, 5.3, 5.3));
         REQUIRE( game.getBlockMap().at(5).at(86) == BLOCK_FILL );
     }
     SECTION("x-")
     {
-        Game game = Game();
         game.placeBlock(Vector3(5.2, 5.3, 5.3));
         REQUIRE( game.getBlockMap().at(5).at(84) == BLOCK_FILL );
     }
     SECTION("y+")
     {
-        Game game = Game();
         game.placeBlock(Vector3(5.3, 5.9, 5.3));
         REQUIRE( game.getBlockMap().at(5).at(101) == BLOCK_FILL );
     }
     SECTION("y-")
     {
-        Game game = Game();
         game.placeBlock(Vector3(5.3, 5.2, 5.3));
         REQUIRE( game.getBlockMap().at(5).at(69) == BLOCK_FILL );
     }
     SECTION("z+")
     {
-        Game game = Game();
         game.placeBlock(Vector3(5.3, 5.4, 5.9));
         REQUIRE( game.getBlockMap().at(6).at(85) == BLOCK_FILL );
     }
     SECTION("z-")
     {
-        Game game = Game();
         game.placeBlock(Vector3(5.3, 5.4, 5.2));
         REQUIRE( game.getBlockMap().at(4).at(85) == BLOCK_FILL );
+    }
+}
+
+TEST_CASE("updatePlayer", "[Game]")
+{
+    Game game = Game();
+    SECTION("arrow_up")
+    {
+        float t = game.player.view.theta;
+        game.updatePlayer(ARROW_UP);
+        REQUIRE( game.player.view.theta == t + TILT );
+    }
+    SECTION("arrow_down")
+    {
+        float t = game.player.view.theta;
+        game.updatePlayer(ARROW_DOWN);
+        REQUIRE( game.player.view.theta == t - TILT );
+    }
+    SECTION("arrow_left")
+    {
+        float t = game.player.view.phi;
+        game.updatePlayer(ARROW_LEFT);
+        REQUIRE( game.player.view.phi == t - TILT );
+    }
+    SECTION("arrow_right")
+    {
+        float t = game.player.view.phi;
+        game.updatePlayer(ARROW_RIGHT);
+        REQUIRE( game.player.view.phi == t + TILT );
     }
 }

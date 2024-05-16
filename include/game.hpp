@@ -131,7 +131,6 @@ public:
         return screen;
     }
 
-private:
     /**
      * struct for player attributes
      */
@@ -141,6 +140,7 @@ private:
         VectorS view;
     } player;
 
+private:
     /**
      * Two dimensional array to hold block locations,
      * stored in z-slices.
