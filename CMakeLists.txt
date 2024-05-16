@@ -2,10 +2,10 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Terminecraft LANGUAGES CXX)
 
+# testing
 include(CTest)
 enable_testing()
 
-# include header files
 include_directories(src)
 include_directories(include)
 
