@@ -402,14 +402,17 @@ void Game::initMap()
  */
 void Game::fillMap()
 {
+    // generates random number for perlin noise
+    srand((unsigned) time(NULL));
+	int random = rand() % 10;
     for (int x = 0; x < CHUNK_X; x++)
     {
         for (int y = 0; y < CHUNK_Y; y++)
         {
             auto noise = 0;
             if (isRandom)
-                noise = db::perlin(double(x) / 12.0, double(y) / 12.0) * 4 * DEPTH + DEPTH;
-            for (int z = 0; z < max(DEPTH, (int)noise); z++) {
+                noise = db::perlin(double(x) / 12.0, double(y) / 12.0, double(random)) * (4 * DEPTH) + (DEPTH * 1.5);
+            for (int z = 0; z < max(2, (int)noise); z++) {
                 block_map[z][convertCoordinates(x, y)] = BLOCK_FILL;
             }
         }
