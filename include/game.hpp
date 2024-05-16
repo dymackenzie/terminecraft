@@ -19,7 +19,7 @@ static const int WIDTH = 500;
 static const int HEIGHT = 180;
 
 static const float VIEW_WIDTH = 1;    // in radians
-static const float VIEW_HEIGHT = 1; // in radians
+static const float VIEW_HEIGHT = 0.7; // in radians
 
 // speed of player and view rotation speed
 static const float SPEED = 0.15;
@@ -37,10 +37,10 @@ static const int START_X = 5;
 static const int START_Y = 5;
 static const int START_Z = DEPTH + EYE_HEIGHT;
 
-static const float BLOCK_BORDER_WIDTH = 0.03;
-static const char BLOCK_FILL = '@';
+static const float BLOCK_BORDER_WIDTH = 0.05;
+static const char BLOCK_FILL = '5';
 static const char BLOCK_HIGHLIGHT = 'o';
-static const char BLOCK_BORDER = '.';
+static const char BLOCK_BORDER = ',';
 
 class Game
 {
