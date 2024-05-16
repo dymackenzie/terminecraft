@@ -53,14 +53,14 @@ void Game::run()
         // render picture
         refreshScreen();
 
+        // draw picture
+        drawScreen();
+
         // reset block highlight if it wasn't removed
         if (hasBlock && !wasRemoved)
         {
             block_map[(int)currBlock.z][convertCoordinates((int)currBlock.x, (int)currBlock.y)] = BLOCK_FILL;
         }
-
-        // draw picture
-        drawScreen();
     }
 }
 
@@ -396,17 +396,22 @@ void Game::initMap()
 
 /**
  * Fills the existing block map up with blocks.
+ * Includes perlin noise for terrain generation.
  *
  * @pre - the block map must already be initialized.
  */
 void Game::fillMap()
 {
-    for (int z = 0; z < DEPTH; z++)
+    for (int x = 0; x < CHUNK_X; x++)
     {
-        // z-slice
-        for (int xy = 0; xy < CHUNK_X * CHUNK_Y; xy++)
+        for (int y = 0; y < CHUNK_Y; y++)
         {
-            block_map[z][xy] = BLOCK_FILL;
+            auto noise = 0;
+            if (isRandom)
+                noise = db::perlin(double(x) / 12.0, double(y) / 12.0) * 4 * DEPTH + DEPTH;
+            for (int z = 0; z < max(DEPTH, (int)noise); z++) {
+                block_map[z][convertCoordinates(x, y)] = BLOCK_FILL;
+            }
         }
     }
 }

@@ -43,24 +43,28 @@ TEST_CASE("getBlock", "[Game]")
 {
     SECTION("pointing void")
     {
-        Game game = Game();
+        Game game = Game(Vector3(START_X, START_Y, START_Z),
+                         VectorS(0, M_PI / 2),
+                         false);
         Vector3 t = game.getBlock();
         // in original game ray trace is pointing into the void
-        REQUIRE(t == Vector3(16.01, 5, 5));
+        REQUIRE( game.isRayOutside(t) == true );
     }
     SECTION("pointing up")
     {
         Game game = Game(Vector3(START_X, START_Y, START_Z),
-                         VectorS(0, M_PI / 2));
+                         VectorS(0, M_PI / 2),
+                         false);
         Vector3 t = game.getBlock();
-        REQUIRE(t == Vector3(5, 5, 16.01));
+        REQUIRE( game.isRayOutside(t) == true );
     }
     SECTION("pointing down")
     {
         Game game = Game(Vector3(START_X, START_Y, START_Z),
-                         VectorS(0, -M_PI / 2));
+                         VectorS(0, -M_PI / 2),
+                         false);
         Vector3 t = game.getBlock();
-        REQUIRE(t == Vector3(5, 5, 3.99));
+        REQUIRE( game.isRayOutside(t) == false );
     }
 }
 

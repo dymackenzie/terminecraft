@@ -4,12 +4,14 @@
 
 #ifndef GAME_H
 #define GAME_H
+#define DB_PERLIN_IMPL
 
 #include <vector>
 #include <vec3.hpp>
 #include <vecs.hpp>
 #include <colors.h>
 #include <bits/stdc++.h>
+#include "db_perlin.hpp"
 
 using namespace std;
 
@@ -57,11 +59,12 @@ public:
     /**
      * Customized constructor.
      */
-    Game(Vector3 ppos, VectorS pview)
+    Game(Vector3 ppos, VectorS pview, bool pisRandom)
     {
         *this = Game();
         player.pos = ppos;
         player.view = pview;
+        isRandom = pisRandom;
     }
 
     /**
@@ -141,6 +144,11 @@ public:
     } player;
 
 private:
+    /**
+     * Variable to keep track of whether we want random terrain generation.
+     */
+    bool isRandom = true;
+
     /**
      * Two dimensional array to hold block locations,
      * stored in z-slices.
